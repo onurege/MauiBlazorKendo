@@ -1,0 +1,50 @@
+﻿<TelerikSignature Width="120px"
+                  Height="20px"
+                  Color="@Color"
+                  BackgroundColor="@BackgroundColor"
+                  HideLine="@HideLine"
+                  Smooth="@Smooth"
+@bind-Value="@Value">
+</TelerikSignature>
+
+@code {
+    public TelerikSignature SignatureRef { get; set; }
+    public string Value { get; set; }
+    public string Color { get; set; }
+    public string BackgroundColor { get; set; }
+    public bool HideLine { get; set; }
+    public bool Smooth { get; set; }
+
+    public void OnColorValueChanged(string value)
+    {
+        Color = value;
+        StateHasChanged();
+    }
+
+    public void OnBackgroundColorChanged(string value)
+    {
+        BackgroundColor = value;
+        // the background is part of the signature
+        // if the value is not cleared, the new background
+        // will not be visible as the current one will overlap it
+        ClearValue();
+    }
+
+    public void OnSmoothChanged(bool value)
+    {
+        Smooth = value;
+        StateHasChanged();
+    }
+
+    public void OnHideLineChanged(bool value)
+    {
+        HideLine = value;
+        StateHasChanged();
+    }
+
+    public void ClearValue()
+    {
+        Value = string.Empty;
+        StateHasChanged();
+    }
+}

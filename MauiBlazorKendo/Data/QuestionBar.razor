@@ -1,0 +1,57 @@
+﻿<fieldset>
+    <div class="d-flex buttonGroup">
+        @foreach (var (item, state) in ValueListItemsWithState)
+        {
+            <TelerikButton ThemeColor="@GetThemeColor(state.RenderStyle)"
+                           CssClass="w-100 h-100 mx-2 my-2"
+                           OnClick="@(() => ToggleRenderStyle(state))"
+                           Text="@item">
+            </TelerikButton>
+        }
+    </div>
+</fieldset>
+
+@code {
+    [Parameter] public List<ValueList> ValueListInfo { get; set; }
+    public IEnumerable<string> ValueListItems;
+    private List<(string Value, ButtonState State)> ValueListItemsWithState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ValueListItems = ValueListInfo[0].ValueListItems.Select(x => x.DisplayText).ToList();
+        ValueListItemsWithState = ValueListItems.Select(v => (v, new ButtonState())).ToList();
+    }
+
+    private void ToggleRenderStyle(ButtonState state)
+    {
+        foreach (var item in ValueListItemsWithState)
+        {
+            item.State.RenderStyle = ButtonRenderStyle.Secondary;
+        }
+        state.RenderStyle = ButtonRenderStyle.Info;
+    }
+
+    private string GetThemeColor(ButtonRenderStyle renderStyle)
+    {
+        switch (renderStyle)
+        {
+            case ButtonRenderStyle.Info:
+                return "info";
+            case ButtonRenderStyle.Secondary:
+                return "secondary";
+            default:
+                return "default";
+        }
+    }
+
+    private class ButtonState
+    {
+        public ButtonRenderStyle RenderStyle { get; set; } = ButtonRenderStyle.Secondary;
+    }
+
+    public enum ButtonRenderStyle
+    {
+        Info,
+        Secondary
+    }
+}

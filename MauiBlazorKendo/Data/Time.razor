@@ -1,0 +1,8 @@
+﻿<TelerikDateTimePicker Min="@Min" Max="@Max" @bind-Value="@selectedTime"
+                       Format="dd MMM yyyy HH:mm:ss"></TelerikDateTimePicker>
+
+@code {
+    private DateTime? selectedTime = DateTime.Now;
+    public DateTime Min = new DateTime(1990, 1, 1, 8, 15, 0);
+    public DateTime Max = new DateTime(2025, 1, 1, 19, 30, 45);
+}

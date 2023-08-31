@@ -1,0 +1,47 @@
+﻿@page "/"
+@using MauiBlazorKendo.Data
+    <div style="width: 100%;">
+        <TelerikPanelBar Data="@PanelBarItems">
+            <PanelBarBindings>
+                <PanelBarBinding ItemsField="Items">
+                    <ContentTemplate>
+                    @{
+                        var item = context as PanelBarItem;
+
+                            // <div style="padding: 8px 16px;">
+                            // <QuestionBar ValueListInfo="@x.ValueList" />
+                            // </div>
+                        }
+                    </ContentTemplate>
+                </PanelBarBinding>
+            </PanelBarBindings>
+        </TelerikPanelBar>
+    </div>
+
+    @code {
+        public List<PanelBarItem> PanelBarItems { get; set; }
+
+        public class PanelBarItem
+        {
+            public string Text { get; set; }
+            public List<PanelBarItem> Items { get; set; }
+        }
+
+        protected override void OnInitialized()
+        {
+            var groups = Helper.ConvertJsonFileToObjects("BODY");
+
+            PanelBarItems = groups.Select(group =>
+            new PanelBarItem
+            {
+                Text = group.QuestionGroupName,
+                Items = group.Questions.Select(question =>
+        new PanelBarItem
+            {
+                Text = question.QuestionName
+            }).ToList()
+            }).ToList();
+        }
+    }
+
+    
